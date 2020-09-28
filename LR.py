@@ -38,7 +38,11 @@ def get_features(csv_path,is_train=False,scaler=None):
         * https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_csv.html
         * https://www.geeksforgeeks.org/python-read-csv-using-pandas-read_csv/
     '''
-
+    df = pd.read_csv('/train.csv')
+    m= df.iloc[:, :-1].values
+    n= df.iloc[:, -1].values
+    feature_matrix= df(m,n)
+    return featur_matrix
     raise NotImplementedError
 
 def get_targets(csv_path):
@@ -48,8 +52,10 @@ def get_targets(csv_path):
     return a numpy array of shape m x 1
     m is number of examples
     '''
+    targets = df(m,n)
+    return targets
     raise NotImplementedError
-     
+    
 
 def analytical_solution(feature_matrix, targets, C=0.0):
     '''
@@ -64,7 +70,10 @@ def analytical_solution(feature_matrix, targets, C=0.0):
     feature_matrix: numpy array of shape m x n
     targets: numpy array of shape m x 1
     '''
-
+    x=np.transpose(feature_matrix)
+    nv=np.linalg.nv(x*feature_matrix)
+    wt=nv*x*targets
+    return wt
     raise NotImplementedError 
 
 def get_predictions(feature_matrix, weights):
@@ -79,7 +88,7 @@ def get_predictions(feature_matrix, weights):
     feature_matrix: numpy array of shape m x n
     weights: numpy array of shape n x 1
     '''
-
+    pred = feature_matrix*wt
     raise NotImplementedError
 
 def mse_loss(feature_matrix, weights, targets):
@@ -95,6 +104,8 @@ def mse_loss(feature_matrix, weights, targets):
     weights: numpy array of shape n x 1
     targets: numpy array of shape m x 1
     '''
+    mse= (1/(2*m))*(sum((feature_matrix*wt-targets)**2))
+    return mse
     raise NotImplementedError
 
 def l2_regularizer(weights):
@@ -108,6 +119,8 @@ def l2_regularizer(weights):
     Arguments
     weights: numpy array of shape n x 1
     '''
+    l2reg= sum(wt**2)
+    return  l2reg
     raise NotImplementedError
 
 def loss_fn(feature_matrix, weights, targets, C=0.0):
@@ -124,7 +137,8 @@ def loss_fn(feature_matrix, weights, targets, C=0.0):
     C: weight for regularization penalty
     return value: float (scalar)
     '''
-
+    p=(1/2*m)*(sum((feature_matrix*wt-targets)**2))+C*sum(wt**2)
+    return p
     raise NotImplementedError
 
 def compute_gradients(feature_matrix, weights, targets, C=0.0):
@@ -141,6 +155,7 @@ def compute_gradients(feature_matrix, weights, targets, C=0.0):
     C: weight for regularization penalty
     return value: numpy array
     '''
+    
     raise NotImplementedError
 
 def sample_random_batch(feature_matrix, targets, batch_size):
